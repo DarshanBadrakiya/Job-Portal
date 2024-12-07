@@ -43,4 +43,15 @@ const Jobs = () => {
                                         >
                                             <Job job={job} />
                                         </motion.div>
-      
+                                    ))
+                                }
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Jobs;
