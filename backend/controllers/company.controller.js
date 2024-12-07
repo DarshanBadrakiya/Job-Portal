@@ -34,7 +34,8 @@ export const registerCompany = async (req,res) =>{
 
 export const getCompany = async (req, res) => {
     try {
-        const userId = req.id; // Ensure `req.id` is set via middleware
+        const userId = req.id; 
+        console.log(userId)// Ensure `req.id` is set via middleware
         if (!userId) {
             return res.status(400).json({
                 message: "User ID not found in request",
