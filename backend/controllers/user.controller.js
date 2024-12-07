@@ -98,7 +98,8 @@ export const login =  async (req,res) => {
         maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
         httpOnly: true,                  // Prevent access from JavaScript
         secure: true, // Use HTTPS in production
-        sameSite: 'none',              // Prevent CSRF
+        sameSite: 'none',
+        domain: '.onrender.com'
     })
     .json({
         message: `Welcome back ${user.fullname}`,
