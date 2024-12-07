@@ -6,6 +6,8 @@ import LatestJobs from "./LatestJobs";
 import Footer from "./Footer";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useDispatch, useSelector } from "react-redux";
+import useGetAllCompanies from "@/hooks/useGetAllCompanies";
+import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
 import { useNavigate } from "react-router-dom";
 import { resetFilters } from "@/redux/jobSlice";
 import StatsSection from "./StatsSection";
