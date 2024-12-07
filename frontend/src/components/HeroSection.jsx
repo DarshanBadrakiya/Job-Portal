@@ -27,7 +27,7 @@ const HeroSection = () => {
                     Search, Apply & <br /> Get Your <span className="text-[#6a38c2]">Dream Jobs</span>
                 </h1>
                 <p className="text-lg sm:text-base md:text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ad? Totam libero laudantium.
+                    Talent meets opportunity here and Elevate your career ambitions
                 </p>
                 <div className="flex w-full max-w-lg sm:max-w-md shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
                     <Input
