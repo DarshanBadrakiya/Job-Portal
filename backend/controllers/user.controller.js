@@ -42,7 +42,10 @@ export const register = async (req,res) => {
         })
     }catch(error){
         console.log(error);
-        
+        return res.status(500).json({
+            message: "An error occurred during Register",
+            success: false,
+        });
     }
 }
 export const login =  async (req,res) => {
@@ -78,7 +81,7 @@ export const login =  async (req,res) => {
         const tokenData = {
             userId : user._id
         }
-        const token = await jwt.sign(tokenData,process.env.SECRET_KEY , {expiresIn:'30d'});
+        const token = await jwt.sign(tokenData,process.env.SECRET_KEY , {expiresIn:'1d'});
 
         user = {
             _id:user._id,
@@ -96,7 +99,10 @@ export const login =  async (req,res) => {
         })
     }catch(error){
         console.log(error);
-        
+        return res.status(500).json({
+            message: "An error occurred during login",
+            success: false,
+        });
     }
 }
 
