@@ -1,3 +1,6 @@
+import { Badge } from "@/components/ui/badge";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 const LatestJobCards = ({ job }) => {
     const navigate = useNavigate();
 
