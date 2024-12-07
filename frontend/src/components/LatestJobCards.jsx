@@ -22,3 +22,4 @@ const LatestJobCards = ({ job }) => {
         </div>
     );
 };
+export default LatestJobCards;
