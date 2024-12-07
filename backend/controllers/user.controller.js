@@ -98,7 +98,7 @@ export const login =  async (req,res) => {
         maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
         httpOnly: true,                  // Prevent access from JavaScript
         secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-        sameSite: 'strict',              // Prevent CSRF
+        sameSite: 'none',              // Prevent CSRF
     })
     .json({
         message: `Welcome back ${user.fullname}`,
