@@ -15,6 +15,8 @@ import TestimonialSection from "./TestimonialSection";
 
 const Home = () => {
     useGetAllJobs();
+    useGetAllCompanies();
+    useGetAllAdminJobs();
     const { user } = useSelector(store => store.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
