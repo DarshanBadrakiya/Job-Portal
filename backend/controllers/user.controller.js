@@ -92,19 +92,17 @@ export const login =  async (req,res) => {
             profile:user.profile
         }
 
-        return res
-    .status(200)
-    .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
-        httpOnly: true,                  // Prevent access from JavaScript
-        secure: true, // Use HTTPS in production
-        sameSite: 'none',
-        domain: '.onrender.com'
-    })
-    .json({
-        message: `Welcome back ${user.fullname}`,
-        user,
-        success: true,
+        return res.status(200).cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
+            httpOnly: true,                  // Prevent access from JavaScript
+            secure: true, // Use HTTPS in production
+            sameSite: 'none',
+            
+        })
+        .json({
+            message: `Welcome back ${user.fullname}`,
+            user,
+            success: true,
     });
     }catch(error){
         console.log(error);
@@ -121,7 +119,7 @@ export const logout = (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", // Use secure cookies in production
             sameSite: "none",
-            domain:".onrender.com"// Prevent CSRF attacks
+            // Prevent CSRF attacks
         });
         return res.status(200).json({
             message: "Logout successful",
