@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -11,20 +11,22 @@ import { USER_API_END_POINT } from "@/utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import store from "@/redux/store";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+
 const Login = () => {
     const [input, setInput] = useState({
         email: "",
         password: "",
         role: "",
     });
-    const {loading,user} = useSelector(store=>store.auth);
+    const { loading, user } = useSelector(store => store.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
-
     }
+
     const submitHandler = async (e) => {
         e.preventDefault();
 
@@ -37,7 +39,7 @@ const Login = () => {
                 withCredentials: true
             });
             if (res.data.success) {
-                dispatch(setUser(res.data.user))
+                dispatch(setUser(res.data.user));
                 navigate("/");
                 toast.success(res.data.message);
             }
@@ -48,21 +50,22 @@ const Login = () => {
             } else {
                 toast.error(error.message);
             }
-        }finally{
+        } finally {
             dispatch(setLoading(false));
         }
     }
-    useEffect(()=>{
 
-        if(user){
+    useEffect(() => {
+        if (user) {
             navigate("/")
         }
     })
+
     return (
         <div>
             <Navbar />
-            <div className="flex items-center justify-center max-w-7xl mx-auto">
-                <form onSubmit={submitHandler} className="w-1/2 border border-grey-200 rounded-md p-4 my-10">
+            <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
+                <form onSubmit={submitHandler} className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 border border-gray-200 rounded-md p-4 my-10">
                     <h1 className="font-bold text-xl mb-5">Login</h1>
                     <div className="my-2">
                         <Label>Email</Label>
@@ -85,7 +88,7 @@ const Login = () => {
                         </RadioGroup>
                     </div>
                     {
-                        loading ? <Button className="w-full my-4"><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Please Wait</Button> :<Button className="w-full my-4" type="submit">Login</Button>
+                        loading ? <Button className="w-full my-4"><Loader2 className="mr-2 h-4 w-4 animate-spin" />Please Wait</Button> : <Button className="w-full my-4" type="submit">Login</Button>
                     }
                     <span className="text-sm">Don't have an account? <Link to="/signup" className="text-blue-600">Signup</Link></span>
                 </form>
