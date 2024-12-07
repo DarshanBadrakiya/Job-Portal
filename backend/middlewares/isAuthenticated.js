@@ -1,27 +1,23 @@
-import jwt from "jsonwebtoken";
-
 const isAuthenticated = (req, res, next) => {
     try {
-        // Retrieve token from cookies
-        const token = req.cookies.token;
+        console.log("Cookies received:", req.cookies); // Log cookies
+        const token = req.cookies.token; // Extract the token
+
         if (!token) {
             return res.status(401).json({
-                message: "User not authenticated",
+                message: "User not authenticated (No token)",
                 success: false,
             });
         }
 
-        // Verify the token
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY); // Verify the token
+        console.log("Decoded token:", decoded); // Log decoded token
 
-        // Attach user ID to the request object
-        req.id = decoded.userId;
-
-        next(); // Proceed to the next middleware/controller
+        req.id = decoded.userId; // Attach the user ID to the request
+        next(); // Proceed to the next middleware
     } catch (error) {
         console.error("Authentication error:", error);
 
-        // Handle specific JWT errors
         if (error.name === "TokenExpiredError") {
             return res.status(401).json({
                 message: "Token has expired",
@@ -35,12 +31,9 @@ const isAuthenticated = (req, res, next) => {
             });
         }
 
-        // Generic error response
         return res.status(500).json({
             message: "Authentication failed",
             success: false,
         });
     }
 };
-
-export default isAuthenticated;
