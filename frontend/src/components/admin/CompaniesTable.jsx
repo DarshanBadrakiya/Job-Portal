@@ -7,24 +7,24 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const CompaniesTable = () => {
-    const { companies, searchCompanyByText } = useSelector(store => store.company);
-    const [filterCompany, setFilterCompany] = useState(companies);
+    const { companies,searchCompanyByText } = useSelector(store => store.company);
+    const [filterCompany,setFilterCompany] = useState(companies);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const filteredCompany = companies?.length >= 0 && companies?.filter((company) => {
-            if (!searchCompanyByText) {
+    useEffect(()=>{
+        const filteredCompany = companies?.length >=0 && companies?.filter((company)=>{
+            if(!searchCompanyByText){
                 return true;
             }
             return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
         })
         setFilterCompany(filteredCompany);
-    }, [companies, searchCompanyByText]);
-
+    },[companies,searchCompanyByText])
     return (
-        <div className="overflow-x-auto">
-            <Table className="min-w-full">
-                <TableCaption>A List of your registered companies</TableCaption>
+        <div>
+            <Table>
+                <TableCaption>
+                    A List of your registered companies
+                </TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Logo</TableHead>
@@ -36,10 +36,11 @@ const CompaniesTable = () => {
                 <TableBody>
                     {
                         filterCompany?.map((company) => (
-                            <TableRow key={company._id}>
+                            <tr>
                                 <TableCell>
-                                    <Avatar className="border border-gray-500 w-12 h-12">
-                                        <AvatarImage className="object-cover w-full h-full" src={company?.logo ? company?.logo : "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="} />
+                                    <Avatar className="border border-gray-500">
+                                        
+                                    <AvatarImage className="border-1.5 border-gray-500 object-cover" src={company?.logo ? company?.logo : "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="} />
                                     </Avatar>
                                 </TableCell>
                                 <TableCell>{company?.name}</TableCell>
@@ -50,20 +51,21 @@ const CompaniesTable = () => {
                                             <MoreHorizontal />
                                         </PopoverTrigger>
                                         <PopoverContent className="w-32">
-                                            <div onClick={() => navigate(`/admin/companies/${company._id}`)} className="flex items-center gap-2 w-fit cursor-pointer">
+                                            <div onClick={()=>navigate(`/admin/companies/${company._id}`)} className="flex items-center gap-2 w-fit cursor-pointer">
                                                 <Edit2 className="w-4" />
                                                 <span>Edit</span>
                                             </div>
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
-                            </TableRow>
+
+                            </tr>
                         ))
                     }
                 </TableBody>
             </Table>
         </div>
     );
-};
+}
 
 export default CompaniesTable;
