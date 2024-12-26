@@ -6,17 +6,15 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import {
     Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import axios from "axios";
 import { JOB_API_END_POINT } from "@/utils/constants";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
-const companyArray = [];
 
 const PostJob = () => {
-    const {user} = useSelector(store=>store.auth);
-
+    const { user } = useSelector(store => store.auth);
     const [input, setInput] = useState({
         title: "",
         description: "",
@@ -27,33 +25,33 @@ const PostJob = () => {
         experienceLevel: "",
         position: 0,
         companyId: "",
-        
     });
-    const {companies} = useSelector(store => store.company);
+    const { companies } = useSelector(store => store.company);
     const changeEventHandler = (e) => {
-        setInput({ ...input, [e.target.name]: e.target.value })
+        setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-    const changeSelectHandler = (value)=>{
-        const selectedCompany = companies.find((company)=>company.name.toLowerCase()===value)
-        setInput({...input,companyId:selectedCompany._id})
+    const changeSelectHandler = (value) => {
+        const selectedCompany = companies.find((company) => company.name.toLowerCase() === value);
+        setInput({ ...input, companyId: selectedCompany._id });
     }
-    const [loading,setLoading] = useState(false);
+
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const submitHandler = async (e)=>{
+    const submitHandler = async (e) => {
         e.preventDefault();
-        console.log(input)
+        console.log(input);
         try {
             setLoading(true);
-            const res = await axios.post(`${JOB_API_END_POINT}/post`,input,{
-                headers:{
-                    'Content-Type':'application/json'
+            const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                withCredentials:true
-            })
-            if(res.data.success){
+                withCredentials: true
+            });
+            if (res.data.success) {
                 toast.success(res.data.message);
-                navigate("/admin/jobs")   
+                navigate("/admin/jobs");
             }
         } catch (error) {
             if (error.response) {
@@ -61,8 +59,8 @@ const PostJob = () => {
             } else {
                 toast.error(error.message);
             }
-        }finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -71,15 +69,15 @@ const PostJob = () => {
             <Navbar />
             <div className="max-w-sm mx-auto">
                 <div className="flex items-center gap-10">
-                <Button  onClick={()=>{navigate("/admin/jobs")}} className="mt-1 mr-1 outline-none bg-white text-black hover:bg-white"><ArrowLeft/></Button>
-                <h1 className="text-lg font-bold">Create New Job</h1>
-
+                    <Button onClick={() => { navigate("/admin/jobs"); }} className="mt-1 mr-1 outline-none bg-white text-black hover:bg-white">
+                        <ArrowLeft />
+                    </Button>
+                    <h1 className="text-lg font-bold">Create New Job</h1>
                 </div>
             </div>
             <div className="flex items-center justify-center w-screen my-5">
-
-                <form onSubmit={submitHandler} action="" className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md">
-                    <div className="grid grid-cols-2 gap-2">
+                <form onSubmit={submitHandler} action="" className="p-8 max-w-4xl w-full border border-gray-200 shadow-lg rounded-md">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <Label>Title</Label>
                             <Input
@@ -111,7 +109,7 @@ const PostJob = () => {
                             />
                         </div>
                         <div>
-                            <Label>Salary(LPA)</Label>
+                            <Label>Salary (LPA)</Label>
                             <Input
                                 type="text"
                                 name="salary"
@@ -151,7 +149,7 @@ const PostJob = () => {
                             />
                         </div>
                         <div>
-                            <Label>No. Of Postion</Label>
+                            <Label>No. Of Positions</Label>
                             <Input
                                 type="number"
                                 name="position"
@@ -162,17 +160,17 @@ const PostJob = () => {
                         </div>
                         <div>
                             {
-                                 companies.length && (
+                                companies.length > 0 && (
                                     <Select onValueChange={changeSelectHandler}>
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select an option" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {
-                                                    companies.map((company)=>{
-                                                        return(
-                                                            <SelectItem value={company?.name?.toLowerCase()}>{company?.name}</SelectItem>
+                                                    companies.map((company) => {
+                                                        return (
+                                                            <SelectItem key={company._id} value={company?.name?.toLowerCase()}>{company?.name}</SelectItem>
                                                         )
                                                     })
                                                 }
@@ -182,12 +180,14 @@ const PostJob = () => {
                                 )
                             }
                         </div>
-
                     </div>
+
                     {
-                        loading ? <Button className="w-full my-4"><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Please Wait</Button> :<Button className="w-full my-4" type="submit">Create New Job</Button>
-                    }                    {
-                        companies.length === 0 && <p className="text-xs text-red-600 font-bold text-center my-3">*Please Regiter a company first, before creating job</p>
+                        loading ? <Button className="w-full my-4"><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait</Button> :
+                            <Button className="w-full my-4" type="submit">Create New Job</Button>
+                    }
+                    {
+                        companies.length === 0 && <p className="text-xs text-red-600 font-bold text-center my-3">*Please register a company first, before creating a job.</p>
                     }
                 </form>
             </div>

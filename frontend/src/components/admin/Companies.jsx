@@ -9,31 +9,39 @@ import { useDispatch } from "react-redux";
 import { setSearchCompanyByText } from "@/redux/companySlice";
 
 const Companies = () => {
-    const [input,setInput] = useState("");
+    const [input, setInput] = useState("");
     useGetAllCompanies();
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    useEffect(()=>{
+
+    useEffect(() => {
         dispatch(setSearchCompanyByText(input));
-    },[input])
+    }, [input, dispatch]);
+
     return (
         <div>
             <Navbar />
-            <div className="max-w-6xl mx-auto my-10">
-                <div className="flex items-center justify-between my-5">
+            <div className="max-w-7xl mx-auto px-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between my-5 space-y-4 sm:space-y-0 sm:space-x-4">
                     <Input
-                        className="w-fit"
+                        className="w-full sm:w-1/3"
                         placeholder="Filter by name"
-                        onChange={(e)=>setInput(e.target.value)}
+                        onChange={(e) => setInput(e.target.value)}
                     />
-                    <Button onClick={()=>{
-                        navigate("/admin/companies/create");
-                    }}>New Comapny</Button>
+                    <Button 
+                        className="w-full sm:w-auto"
+                        onClick={() => {
+                            navigate("/admin/companies/create");
+                        }}
+                    >
+                        New Company
+                    </Button>
                 </div>
-                <CompaniesTable/>
+                <CompaniesTable />
             </div>
         </div>
     );
-}
+};
 
-export default Companies
+export default Companies;

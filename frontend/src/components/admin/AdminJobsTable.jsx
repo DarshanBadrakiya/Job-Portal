@@ -6,18 +6,23 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AdminJobsTable = () => {
-    const {allAdminJobs,searchJobByText} = useSelector(store=>store.job);
-    const [filterJobs,setFilterJobs] = useState(allAdminJobs);
+    const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
+    const [filterJobs, setFilterJobs] = useState(allAdminJobs);
     const navigate = useNavigate();
-    useEffect(()=>{
-        const filteredJobs = allAdminJobs?.length >=0 && allAdminJobs?.filter((job)=>{
-            if(!searchJobByText){
+
+    useEffect(() => {
+        const filteredJobs = allAdminJobs?.length >= 0 && allAdminJobs?.filter((job) => {
+            if (!searchJobByText) {
                 return true;
             }
-            return job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) || job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase());
-        })
+            return (
+                job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
+                job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase())
+            );
+        });
         setFilterJobs(filteredJobs);
-    },[allAdminJobs,searchJobByText])
+    }, [allAdminJobs, searchJobByText]);
+
     return (
         <div>
             <Table>
@@ -35,32 +40,33 @@ const AdminJobsTable = () => {
                 <TableBody>
                     {
                         filterJobs?.map((job) => (
-                            
-                            <tr>
+                            <TableRow key={job._id}>
                                 <TableCell>{job?.company?.name}</TableCell>
                                 <TableCell>{job?.title}</TableCell>
                                 <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
-                                <TableCell className="text-right cursor-pointer">
+                                <TableCell className="text-right">
                                     <Popover>
                                         <PopoverTrigger>
                                             <MoreHorizontal />
                                         </PopoverTrigger>
                                         <PopoverContent className="w-32">
-                                            <div onClick={()=>navigate(`/admin/jobs/${job._id}/applicants`)} className="flex items-center gap-2 w-fit cursor-pointer">
+                                            <div
+                                                onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
+                                                className="flex items-center gap-2 w-fit cursor-pointer"
+                                            >
                                                 <Eye className="w-4" />
                                                 <span>Applicants</span>
                                             </div>
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
-
-                            </tr>
+                            </TableRow>
                         ))
                     }
                 </TableBody>
             </Table>
         </div>
     );
-}
+};
 
 export default AdminJobsTable;

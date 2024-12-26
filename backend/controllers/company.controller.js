@@ -32,25 +32,38 @@ export const registerCompany = async (req,res) =>{
 }
 
 
-export const getCompany = async (req,res) => {
+export const getCompany = async (req, res) => {
     try {
-        const userId = req.id;
-        const companies = await Company.find({userId});
-        if(!companies){
-            return res.status(404).json({
-                message:"Company not found",
-                success:false
-            })
+        const userId = req.id; 
+        console.log(userId)// Ensure `req.id` is set via middleware
+        if (!userId) {
+            return res.status(400).json({
+                message: "User ID not found in request",
+                success: false,
+            });
         }
+
+        const companies = await Company.find({ userId }); // Fetch companies for the logged-in user
+        if (!companies || companies.length === 0) {
+            return res.status(404).json({
+                message: "No companies found for this user",
+                success: false,
+            });
+        }
+
         return res.status(200).json({
             companies,
-            success:true
-        })
+            success: true,
+        });
     } catch (error) {
-        console.log(error);
-        
+        console.error("Error fetching companies:", error);
+        return res.status(500).json({
+            message: "Server error",
+            success: false,
+        });
     }
-}
+};
+
 
 export const getCompanyById = async (req,res) => {
     try {

@@ -43,7 +43,11 @@ export const register = async (req,res) => {
     }catch(error){
         console.log(error);
         return res.status(500).json({
+<<<<<<< HEAD
             message: "An error occurred during login",
+=======
+            message: "An error occurred during Register",
+>>>>>>> 25389394d2d6b8f5e3237fca9e39570702c51623
             success: false,
         });
     }
@@ -81,7 +85,7 @@ export const login =  async (req,res) => {
         const tokenData = {
             userId : user._id
         }
-        const token = await jwt.sign(tokenData,process.env.SECRET_KEY , {expiresIn:'30d'});
+        const token = await jwt.sign(tokenData,process.env.SECRET_KEY , {expiresIn:'1d'});
 
         user = {
             _id:user._id,
@@ -92,28 +96,48 @@ export const login =  async (req,res) => {
             profile:user.profile
         }
 
-        return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpsOnly:true,sameSite:'strict'}).json({
-            message:`Welcome back ${user.fullname}`,
-            user,
-            success:true
+        return res.status(200).cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
+            httpOnly: true,                  // Prevent access from JavaScript
+            secure: true, // Use HTTPS in production
+            sameSite: 'none',
+            
         })
+        .json({
+            message: `Welcome back ${user.fullname}`,
+            user,
+            success: true,
+    });
     }catch(error){
         console.log(error);
-        
+        return res.status(500).json({
+            message: "An error occurred during login",
+            success: false,
+        });
     }
 }
 
-export const logout = async (req,res)=>{
-    try{
-        return res.status(200).cookie("token","",{maxAge:0}).json({
-            message:"Logged out successfully",
-            success:true
-        })
-    }catch(error){
-        console.log(error);
-        
+export const logout = (req, res) => {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+            sameSite: "none",
+            // Prevent CSRF attacks
+        });
+        return res.status(200).json({
+            message: "Logout successful",
+            success: true,
+        });
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({
+            message: "Server error during logout",
+            success: false,
+        });
     }
-}
+};
+
 
 export const updateProfile = async (req,res)=>{
     try {
