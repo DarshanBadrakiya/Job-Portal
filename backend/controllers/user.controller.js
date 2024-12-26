@@ -42,7 +42,10 @@ export const register = async (req,res) => {
         })
     }catch(error){
         console.log(error);
-        
+        return res.status(500).json({
+            message: "An error occurred during login",
+            success: false,
+        });
     }
 }
 export const login =  async (req,res) => {
